@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Cartões VIP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto Mono', monospace;
+            margin: 0;
+            background-color: #181818;
+            color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: #4CAF50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .container {
+            background-color: #222;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+            width: 600px;
+            max-width: 90%;
+            box-sizing: border-box;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #eee;
+        }
+
+        input[type="text"], input[type="number"], select {
+            padding: 12px;
+            border: 1px solid #333;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+            background-color: #333;
+            color: #f0f0f0;
+            width: calc(100% - 24px);
+        }
+
+        select {
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="#4CAF50" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 30px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: #222;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #66bb6a;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        #output-area {
+            background-color: #333;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+            font-family: 'Roboto Mono', monospace;
+            white-space: pre-wrap;
+            color: #f0f0f0;
+            width: 600px;
+            max-width: 90%;
+            box-sizing: border-box;
+        }
+
+        .cartao-info {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #444;
+        }
+
+        .cartao-info:last-child {
+            border-bottom: none;
+        }
+
+        .cartao-info div {
+            margin-bottom: 8px;
+        }
+
+        .cartao-info strong {
+            color: #66bb6a;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+
+        .telegram-button {
+            background-color: #2AABEE;
+            color: #fff;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .telegram-button:hover {
+            background-color: #41acee;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <h1>Gerador de Cartões VIP</h1>
+
+    <div class="container">
+        <div class="input-group">
+            <label for="bin">Digite a BIN:</label>
+            <input type="text" id="bin" placeholder="Ex: 4XXXXXXXXXXXXXXX">
+        </div>
+
+        <div class="input-group">
+            <label for="quantidade">Digite a quantidade de cartões:</label>
+            <input type="number" id="quantidade" placeholder="Ex: 1" min="1">
+        </div>
+
+        <div class="input-group">
+            <label for="banco">Escolha o Banco (opcional):</label>
+            <select id="banco">
+                <option value="">Aleatório</option>
+                <option value="Banco do Brasil">Banco do Brasil</option>
+                <option value="Caixa Econômica Federal">Caixa Econômica Federal</option>
+                <option value="Itaú Unibanco">Itaú Unibanco</option>
+                <option value="Bradesco">Bradesco</option>
+                <option value="Santander">Santander</option>
+                <option value="Banco Inter">Banco Inter</option>
+                <option value="Nubank">Nubank</option>
+                <option value="C6 Bank">C6 Bank</option>
+                <option value="BTG Pactual">BTG Pactual</option>
+                <option value="Safra">Safra</option>
+                <option value="Banrisul">Banrisul</option>
+                <option value="Sicoob">Sicoob</option>
+                <option value="Credicorp">Credicorp</option>
+                <option value="Citibank">Citibank</option>
+                <option value="HSBC">HSBC</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="pais">Escolha o País (opcional):</label>
+            <select id="pais">
+                <option value="">Aleatório</option>
+                <option value="Brasil">Brasil</option>
+                <option value="Estados Unidos">Estados Unidos</option>
+                <option value="Canadá">Canadá</option>
+                <option value="México">México</option>
+                <option value="Argentina">Argentina</option>
+                <option value="China">China</option>
+                <option value="Índia">Índia</option>
+                <option value="Rússia">Rússia</option>
+                <option value="Japão">Japão</option>
+                <option value="Alemanha">Alemanha</option>
+                <option value="Reino Unido">Reino Unido</option>
+                <option value="França">França</option>
+                <option value="Itália">Itália</option>
+                <option value="Austrália">Austrália</option>
+                <option value="África do Sul">África do Sul</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="nivel">Escolha o Nível (opcional):</label>
+            <select id="nivel">
+                <option value="">Aleatório</option>
+                <option value="Classic">Classic</option>
+                <option value="Standard">Standard</option>
+                <option value="Gold">Gold</option>
+                <option value="Platinum">Platinum</option>
+                <option value="Black">Black</option>
+                <option value="Signature">Signature</option>
+                <option value="Infinite">Infinite</option>
+                <option value="Electron">Electron</option>
+                <option value="World">World</option>
+                <option value="Business">Business</option>
+                <option value="Corporate">Corporate</option>
+            </select>
+        </div>
+
+        <button onclick="gerarCartoes()">Gerar Cartões</button>
+    </div>
+
+    <div id="output-area">
+    </div>
+
+    <a href="https://t.me/physicxs7" class="telegram-button" target="_blank">
+        Fale Conosco no Telegram
+    </a>
+
+    <script>
+        function calcularDigitoVerificador(numero) {
+            let soma = 0;
+            let par = 0;
+            for (let i = numero.length - 1; i >= 0; i--) {
+                let digito = parseInt(numero.charAt(i));
+                if (par % 2 === 0) {
+                    digito *= 2;
+                    if (digito > 9) {
+                        digito -= 9;
+                    }
+                }
+                soma += digito;
+                par++;
+            }
+            let resto = soma % 10;
+            let digitoVerificador = (10 - resto) % 10;
+            return digitoVerificador;
+        }
+
+        function gerarNumeroAleatorio(tamanho) {
+            let resultado = '';
+            for (let i = 0; i < tamanho; i++) {
+                resultado += Math.floor(Math.random() * 10);
+            }
+            return resultado;
+        }
+
+        function gerarNomeAleatorio() {
+            const nomes = ["João", "Maria", "José", "Ana", "Carlos", "Sofia", "Pedro", "Laura"];
+            const sobrenomes = ["Silva", "Santos", "Oliveira", "Souza", "Rodrigues", "Ferreira", "Alves", "Pereira"];
+            const nomeAleatorio = nomes[Math.floor(Math.random() * nomes.length)] + " " + sobrenomes[Math.floor(Math.random() * sobrenomes.length)];
+            return nomeAleatorio;
+        }
+
+        const bancosList = [
+            "Banco do Brasil", "Caixa Econômica Federal", "Itaú Unibanco", "Bradesco", "Santander",
+            "Banco Inter", "Nubank", "C6 Bank", "BTG Pactual", "Safra", "Banrisul", "Sicoob",
+            "Credicorp", "Citibank", "HSBC"
+        ];
+        function gerarBancoAleatorio() {
+            return bancosList[Math.floor(Math.random() * bancosList.length)];
+        }
+
+        function gerarInstituicaoAleatorio() {
+            const instituicoes = ["Visa", "Mastercard", "Elo", "American Express"];
+            return instituicoes[Math.floor(Math.random() * instituicoes.length)];
+        }
+
+        const niveisList = [
+            "Classic", "Standard", "Gold", "Platinum", "Black", "Signature", "Infinite",
+            "Electron", "World", "Business", "Corporate"
+        ];
+        function gerarNivelAleatorio() {
+            return niveisList[Math.floor(Math.random() * niveisList.length)];
+        }
+
+        const paisesList = [
+            "Brasil", "Estados Unidos", "Canadá", "México", "Argentina", "China", "Índia",
+            "Rússia", "Japão", "Alemanha", "Reino Unido", "França", "Itália", "Austrália",
+            "África do Sul"
+        ];
+        function gerarPaisAleatorio() {
+            return paisesList[Math.floor(Math.random() * paisesList.length)];
+        }
+
+        function gerarCartoes() {
+            const binDigitada = document.getElementById("bin").value;
+            const quantidade = parseInt(document.getElementById("quantidade").value);
+            const bancoSelecionado = document.getElementById("banco").value;
+            const paisSelecionado = document.getElementById("pais").value;
+            const nivelSelecionado = document.getElementById("nivel").value;
+            const outputArea = document.getElementById("output-area");
+            outputArea.innerHTML = "";
+
+            if (!binDigitada || binDigitada.length < 6 || !/^\d+$/.test(binDigitada)) {
+                outputArea.innerHTML = "<p style='color: red;'>Por favor, digite uma BIN válida (pelo menos 6 dígitos numéricos).</p>";
+                return;
+            }
+
+            if (isNaN(quantidade) || quantidade <= 0) {
+                outputArea.innerHTML = "<p style='color: red;'>Por favor, digite uma quantidade válida maior que zero.</p>";
+                return;
+            }
+
+            for (let i = 1; i <= quantidade; i++) {
+                const anoAleatorio = Math.floor(Math.random() * 5) + 2025;
+                const mesAleatorio = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
+                let numeroCartao = binDigitada;
+                const tamanhoRestante = 15 - numeroCartao.length;
+                for (let j = 0; j < tamanhoRestante; j++) {
+                    numeroCartao += Math.floor(Math.random() * 10);
+                }
+                const digitoVerificador = calcularDigitoVerificador(numeroCartao);
+                numeroCartao += digitoVerificador;
+                const cvc = gerarNumeroAleatorio(3);
+                const nomeCompleto = gerarNomeAleatorio();
+                const cpfSimulado = String(Math.floor(Math.random() * 1000)).padStart(3, '0') + "." +
+                                     String(Math.floor(Math.random() * 1000)).padStart(3, '0') + "." +
+                                     String(Math.floor(Math.random() * 1000)).padStart(3, '0') + "-" +
+                                     String(Math.floor(Math.random() * 100)).padStart(2, '0');
+                const bancoCompleto = bancoSelecionado || gerarBancoAleatorio();
+                const instituicao = gerarInstituicaoAleatorio();
+                const nivelCartao = nivelSelecionado || gerarNivelAleatorio();
+                const paisCartao = paisSelecionado || gerarPaisAleatorio();
+
+                const cartaoInfo = `
+                    <div class="cartao-info">
+                        <div><strong>NUMERO CC:</strong> ${numeroCartao}</div>
+                        <div><strong>DATA VLD:</strong> ${mesAleatorio}/${anoAleatorio}</div>
+                        <div><strong>CVC:</strong> ${cvc}</div>
+                        <div><strong>NOME:</strong> ${nomeCompleto}</div>
+                        <div><strong>CPF:</strong> ${cpfSimulado}</div>
+                        <div><strong>BANCO:</strong> ${bancoCompleto}</div>
+                        <div><strong>INSTITUIÇÃO:</strong> ${instituicao}</div>
+                        <div><strong>PAIS:</strong> ${paisCartao}</div>
+                        <div><strong>NIVEL:</strong> ${nivelCartao}</div>
+                    </div>
+                `;
+                outputArea.innerHTML += cartaoInfo;
+            }
+        }
+    </script>
+</body>
+</html>
